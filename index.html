@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f6ed">
+  <meta name="description" content="Find nourishing meals and nearby places to eat without stretching your budget.">
+  <title>Budget Bites | Eat well, spend wisely</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d3028;
+      --muted: #64736a;
+      --green: #245c43;
+      --green-dark: #194530;
+      --lime: #d7ed9f;
+      --coral: #e8795d;
+      --paper: #f2f6ed;
+      --white: #fffefa;
+      --line: #dce5d8;
+      --serif: "Fraunces", Georgia, serif;
+      --sans: "DM Sans", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .topbar { height: 76px; padding: 0 7.2vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(29,48,40,.09); }
+    .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 700; font-size: 19px; letter-spacing: 0; }
+    .brand-mark { width: 30px; height: 30px; display: grid; place-items: center; background: var(--green); color: var(--lime); border-radius: 50%; font-size: 17px; }
+    .top-note { color: var(--muted); font-size: 13px; }
+    .screen { display: none; }
+    .screen.active { display: block; animation: appear .32s ease-out both; }
+    @keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .welcome { max-width: 1260px; margin: auto; padding: 54px 7.2vw 72px; }
+    .hero { display: grid; grid-template-columns: 1fr 1.02fr; align-items: center; gap: 7%; min-height: 430px; }
+    .eyebrow { margin: 0 0 19px; color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 510px; margin-bottom: 17px; font: 600 clamp(48px, 5.2vw, 72px)/1.02 var(--serif); letter-spacing: 0; }
+    h1 em { color: var(--green); font-weight: 500; }
+    .hero-copy { max-width: 430px; margin-bottom: 26px; color: var(--muted); font-size: 16px; line-height: 1.7; }
+    .primary-button { min-height: 52px; padding: 0 23px; border: 0; border-radius: 5px; background: var(--green); color: white; font-weight: 700; transition: background .18s, transform .18s; }
+    .primary-button:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .button-arrow { padding-left: 12px; font-size: 18px; }
+    .hero-photo { position: relative; min-height: 390px; overflow: hidden; border-radius: 4px 100px 4px 4px; background: #d9e8d0; }
+    .hero-photo img { position: absolute; width: 100%; height: 100%; inset: 0; object-fit: cover; }
+    .photo-caption { position: absolute; right: 17px; bottom: 17px; padding: 10px 14px; border-radius: 3px; background: var(--white); color: var(--ink); font-size: 12px; font-weight: 600; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; border-top: 1px solid var(--line); margin-top: 44px; padding-top: 25px; }
+    .step-number { color: var(--coral); font-size: 12px; font-weight: 700; }
+    .step h3 { margin: 9px 0 5px; font: 600 21px var(--serif); }
+    .step p { max-width: 270px; margin-bottom: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .planner-wrap { max-width: 1190px; margin: auto; padding: 40px 7vw 70px; }
+    .back-button { padding: 0; border: 0; background: none; color: var(--green); font-size: 13px; font-weight: 700; }
+    .planner-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin: 27px 0 25px; }
+    .planner-heading h1 { margin: 0; font-size: 46px; }
+    .planner-heading p { max-width: 380px; margin: 0 0 5px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .planner-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, .75fr); gap: 34px; align-items: start; }
+    .form-panel { padding: 27px; background: var(--white); border: 1px solid var(--line); border-radius: 5px; }
+    .section-label { margin: 0 0 19px; padding-bottom: 13px; border-bottom: 1px solid var(--line); font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .field { margin-bottom: 20px; }
+    .field label, .macro-field label { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 700; }
+    .field small { display: block; margin-top: 6px; color: var(--muted); font-size: 11px; }
+    .control { width: 100%; height: 45px; padding: 0 12px; border: 1px solid #cbd7ca; border-radius: 3px; outline: none; background: #fff; color: var(--ink); }
+    .control:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(36,92,67,.12); }
+    .input-affix { position: relative; }
+    .input-affix .control { padding-right: 43px; }
+    .affix { position: absolute; top: 50%; right: 13px; transform: translateY(-50%); color: var(--muted); font-size: 13px; pointer-events: none; }
+    .food-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .food-option { position: relative; }
+    .food-option input { position: absolute; opacity: 0; }
+    .food-option span { min-height: 42px; display: grid; place-items: center; border: 1px solid #cbd7ca; border-radius: 3px; color: #43534a; font-size: 12px; cursor: pointer; }
+    .food-option input:checked + span { border-color: var(--green); background: #edf4e9; color: var(--green-dark); font-weight: 700; }
+    .food-option input:focus-visible + span { outline: 3px solid rgba(36,92,67,.2); }
+    .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .macro-field label { color: var(--muted); font-size: 11px; }
+    .macro-field .control { height: 42px; padding: 0 9px; }
+    .location-line { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+    .location-button { padding: 0 13px; border: 1px solid var(--green); border-radius: 3px; background: white; color: var(--green); font-size: 12px; font-weight: 700; }
+    .location-button:hover { background: #edf4e9; }
+    .submit-button { width: 100%; margin-top: 2px; }
+    .side-panel { padding-top: 7px; }
+    .side-panel h2 { margin: 0 0 9px; font: 600 27px var(--serif); }
+    .side-intro { margin-bottom: 21px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .result-card { padding: 17px 0; border-top: 1px solid var(--line); }
+    .result-card h3 { margin: 0 0 7px; font-size: 14px; }
+    .result-card p { margin-bottom: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .mini-tag { display: inline-block; margin: 0 4px 4px 0; padding: 5px 8px; border-radius: 2px; background: #e8efe2; color: var(--green-dark); font-size: 10px; font-weight: 700; }
+    .result-empty { padding: 18px; background: #eaf0e5; color: #536258; font-size: 12px; line-height: 1.6; }
+    .status { min-height: 20px; margin: 11px 0 0; color: var(--green); font-size: 12px; }
+    .status.error { color: #a1412d; }
+    .result-area { display: none; margin-top: 22px; padding-top: 21px; border-top: 1px solid var(--line); }
+    .result-area.visible { display: block; animation: appear .25s ease-out both; }
+    .meal-title { margin-bottom: 7px; font: 600 22px var(--serif); }
+    .meal-description { margin-bottom: 14px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .nutrition-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 14px 0; }
+    .nutrition-cell { padding: 9px 6px; background: #f0f4eb; text-align: center; }
+    .nutrition-cell strong { display: block; font-size: 13px; }
+    .nutrition-cell span { color: var(--muted); font-size: 9px; }
+    .disclaimer { margin: 12px 0 0; color: #718076; font-size: 10px; line-height: 1.55; }
+    .place-list { margin: 0; padding: 0; list-style: none; }
+    .place-item { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #e8ede5; }
+    .place-item strong { display: block; margin-bottom: 3px; font-size: 12px; }
+    .place-item span { color: var(--muted); font-size: 10px; }
+    .place-distance { flex: 0 0 auto; color: var(--green) !important; font-weight: 700; }
+    .footer-note { margin-top: 37px; color: #748077; font-size: 10px; }
+    @media (max-width: 760px) {
+      .topbar { height: 66px; padding: 0 20px; }
+      .top-note { font-size: 11px; }
+      .welcome { padding: 37px 22px 48px; }
+      .hero { grid-template-columns: 1fr; gap: 28px; }
+      h1 { max-width: 450px; font-size: 54px; }
+      .hero-photo { min-height: 300px; border-top-right-radius: 75px; }
+      .steps { grid-template-columns: 1fr; gap: 18px; margin-top: 35px; }
+      .step { display: grid; grid-template-columns: 36px 1fr; column-gap: 8px; }
+      .step-number { grid-row: span 2; padding-top: 4px; }
+      .step h3 { margin: 0 0 3px; }
+      .planner-wrap { padding: 27px 20px 50px; }
+      .planner-heading { display: block; margin: 23px 0 20px; }
+      .planner-heading h1 { margin-bottom: 9px; font-size: 39px; }
+      .planner-grid { grid-template-columns: 1fr; gap: 27px; }
+      .form-panel { padding: 20px 16px; }
+      .side-panel { padding-top: 0; }
+    }
+    @media (max-width: 380px) {
+      .food-options { grid-template-columns: repeat(2, 1fr); }
+      .macro-grid { gap: 6px; }
+      .macro-field .control { padding: 0 5px; }
+      h1 { font-size: 47px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Budget Bites home"><span class="brand-mark" aria-hidden="true">b</span>Budget Bites</a>
+    <span class="top-note">Good food. A little more doable.</span>
+  </header>
+
+  <main>
+    <section class="screen active" id="home-screen" aria-labelledby="welcome-title">
+      <div class="welcome">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">A better kind of everyday</p>
+            <h1 id="welcome-title">Eat well.<br><em>Spend wisely.</em></h1>
+            <p class="hero-copy">Find nourishing food near you that feels good for your body and your budget. A little planning can make a really good meal go a long way.</p>
+            <button class="primary-button" id="start-button" type="button">Start Here <span class="button-arrow" aria-hidden="true">→</span></button>
+          </div>
+          <div class="hero-photo" aria-label="A colorful, nourishing meal">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=85" alt="Fresh salad bowl with vegetables, grains, and greens" fetchpriority="high">
+            <span class="photo-caption">A good meal, within reach.</span>
+          </div>
+        </div>
+        <div class="steps" aria-label="How Budget Bites works">
+          <article class="step"><span class="step-number">01</span><h3>Set your table</h3><p>Choose what you eat, your budget, and the nutrition that matters to you.</p></article>
+          <article class="step"><span class="step-number">02</span><h3>Find your nearby</h3><p>Share a place or use your location to discover restaurants around you.</p></article>
+          <article class="step"><span class="step-number">03</span><h3>Make it a meal</h3><p>Get a practical meal idea shaped around your goals and what you can spend.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="planner-screen" aria-labelledby="planner-title" hidden>
+      <div class="planner-wrap">
+        <button class="back-button" id="back-button" type="button">← &nbsp; Back</button>
+        <div class="planner-heading">
+          <h1 id="planner-title">Make Your Meal</h1>
+          <p>Tell us what works for you. We’ll find nearby places and put together a budget-minded meal idea.</p>
+        </div>
+        <div class="planner-grid">
+          <form class="form-panel" id="meal-form">
+            <p class="section-label">Your preferences</p>
+            <div class="field">
+              <label>Food type</label>
+              <div class="food-options" role="radiogroup" aria-label="Food type">
+                <label class="food-option"><input type="radio" name="foodType" value="omnivore" checked><span>Everything</span></label>
+                <label class="food-option"><input type="radio" name="foodType" value="vegetarian"><span>Vegetarian</span></label>
+                <label class="food-option"><input type="radio" name="foodType" value="vegan"><span>Vegan</span></label>
+                <label class="food-option"><input type="radio" name="foodType" value="pescatarian"><span>Pescatarian</span></label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="budget">Meal budget</label>
+              <div class="input-affix"><input class="control" id="budget" name="budget" type="number" min="1" max="200" step="0.5" value="15" required><span class="affix">USD</span></div>
+            </div>
+            <div class="field">
+              <label>Nutrition goals <span style="font-weight:400;color:var(--muted)">(grams for this meal)</span></label>
+              <div class="macro-grid">
+                <div class="macro-field"><label for="protein">Protein</label><input class="control" id="protein" name="protein" type="number" min="0" max="250" value="35"></div>
+                <div class="macro-field"><label for="carbs">Carbs</label><input class="control" id="carbs" name="carbs" type="number" min="0" max="400" value="55"></div>
+                <div class="macro-field"><label for="fat">Fat</label><input class="control" id="fat" name="fat" type="number" min="0" max="200" value="20"></div>
+                <div class="macro-field"><label for="fiber">Fiber</label><input class="control" id="fiber" name="fiber" type="number" min="0" max="100" value="10"></div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="location">Your location</label>
+              <div class="location-line"><input class="control" id="location" name="location" type="text" placeholder="City, neighborhood, or ZIP code" required autocomplete="street-address"><button class="location-button" id="use-location" type="button">Use my location</button></div>
+              <small>We’ll look for nearby restaurants and cafes using OpenStreetMap.</small>
+            </div>
+            <button class="primary-button submit-button" id="find-button" type="submit">Find my meal <span class="button-arrow" aria-hidden="true">→</span></button>
+            <p class="status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <aside class="side-panel" aria-live="polite">
+            <h2>Your neighborhood</h2>
+            <p class="side-intro">Nearby spots and a nourishing meal idea, made around your choices.</p>
+            <div class="result-empty" id="empty-result">Your nearby picks will show up here once you add a location and tap <strong>Find my meal</strong>.</div>
+            <div id="places-area" hidden>
+              <p class="section-label" style="margin-top:20px">Places nearby</p>
+              <ul class="place-list" id="place-list"></ul>
+            </div>
+            <div class="result-area" id="meal-result">
+              <p class="section-label">A meal to try</p>
+              <h3 class="meal-title" id="meal-name"></h3>
+              <p class="meal-description" id="meal-description"></p>
+              <div class="nutrition-row" id="nutrition-row"></div>
+              <div><span class="mini-tag" id="meal-cost"></span><span class="mini-tag" id="meal-type"></span></div>
+              <p class="disclaimer">Nutrition and meal cost are estimates for this meal idea, not verified restaurant menu items. Confirm ingredients, prices, and allergens with the restaurant. Not medical nutrition advice.</p>
+            </div>
+          </aside>
+        </div>
+        <p class="footer-note">Nearby place data © OpenStreetMap contributors. Location is only used for this search.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const homeScreen = document.querySelector('#home-screen');
+    const plannerScreen = document.querySelector('#planner-screen');
+    const form = document.querySelector('#meal-form');
+    const statusMessage = document.querySelector('#form-status');
+    let coordinates = null;
+
+    function showPlanner(show) {
+      homeScreen.classList.toggle('active', !show);
+      plannerScreen.classList.toggle('active', show);
+      homeScreen.hidden = show;
+      plannerScreen.hidden = !show;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelector('#start-button').addEventListener('click', () => showPlanner(true));
+    document.querySelector('#back-button').addEventListener('click', () => showPlanner(false));
+
+    document.querySelector('#use-location').addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        statusMessage.textContent = 'Location sharing is not available in this browser. Enter a city or ZIP code instead.';
+        statusMessage.classList.add('error');
+        return;
+      }
+      statusMessage.classList.remove('error');
+      statusMessage.textContent = 'Requesting your location…';
+      navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+        coordinates = { lat: coords.latitude, lon: coords.longitude };
+        document.querySelector('#location').value = `${coords.latitude.toFixed(4)}, ${coords.longitude.toFixed(4)}`;
+        statusMessage.textContent = 'Location added. Tap Find my meal when you’re ready.';
+        try {
+          const query = new URLSearchParams({ format: 'jsonv2', lat: coords.latitude, lon: coords.longitude, zoom: '14' });
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${query}`);
+          if (response.ok) {
+            const result = await response.json();
+            const address = result.address || {};
+            const placeName = address.suburb || address.neighbourhood || address.city || address.town || address.village;
+            if (placeName) document.querySelector('#location').value = placeName;
+          }
+        } catch { /* Coordinates remain available even if reverse geocoding is unavailable. */ }
+      }, (error) => {
+        statusMessage.classList.add('error');
+        statusMessage.textContent = error.code === 1 ? 'Location permission was denied. Enter a city or ZIP code instead.' : 'Could not get your location. Enter a city or ZIP code instead.';
+      }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+    });
+
+    async function geocodeLocation(location) {
+      const coordinateMatch = location.match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/);
+      if (coordinateMatch) return { lat: Number(coordinateMatch[1]), lon: Number(coordinateMatch[2]) };
+      const query = new URLSearchParams({ format: 'jsonv2', q: location, limit: '1' });
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?${query}`);
+      if (!response.ok) throw new Error('Location search is temporarily unavailable. Try again or use a nearby city.');
+      const matches = await response.json();
+      if (!matches.length) throw new Error('We couldn’t find that location. Try a city, neighborhood, or ZIP code.');
+      return { lat: Number(matches[0].lat), lon: Number(matches[0].lon) };
+    }
+
+    async function findNearbyPlaces(point) {
+      const query = `[out:json][timeout:15];(node[amenity~"restaurant|cafe|fast_food|food_court"](around:3500,${point.lat},${point.lon});way[amenity~"restaurant|cafe|fast_food|food_court"](around:3500,${point.lat},${point.lon}););out center tags 20;`;
+      const response = await fetch('https://overpass-api.de/api/interpreter', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body: `data=${encodeURIComponent(query)}` });
+      if (!response.ok) throw new Error('Nearby places are temporarily unavailable. Your meal idea is still ready.');
+      const data = await response.json();
+      return data.elements.map((place) => {
+        const lat = place.lat ?? place.center?.lat;
+        const lon = place.lon ?? place.center?.lon;
+        if (lat == null || lon == null) return null;
+        return { name: place.tags?.name || 'Nearby restaurant', type: place.tags?.cuisine?.replaceAll(';', ', ') || place.tags?.amenity?.replaceAll('_', ' ') || 'Food nearby', distance: distanceKm(point.lat, point.lon, lat, lon) };
+      }).filter(Boolean).sort((a, b) => a.distance - b.distance).slice(0, 5);
+    }
+
+    function distanceKm(lat1, lon1, lat2, lon2) {
+      const radians = (degrees) => degrees * Math.PI / 180;
+      const dLat = radians(lat2 - lat1);
+      const dLon = radians(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(radians(lat1)) * Math.cos(radians(lat2)) * Math.sin(dLon / 2) ** 2;
+      return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    const mealIdeas = {
+      omnivore: { name: 'Chicken, rice & greens bowl', ingredients: 'Grilled chicken, brown rice, black beans, greens, and a citrus-yogurt dressing.', protein: 38, carbs: 54, fat: 16, fiber: 12, price: 8.5 },
+      vegetarian: { name: 'Crispy tofu grain bowl', ingredients: 'Golden tofu, brown rice, edamame, crunchy greens, and sesame-lime dressing.', protein: 30, carbs: 57, fat: 18, fiber: 13, price: 7.5 },
+      vegan: { name: 'Lentil & roasted veg bowl', ingredients: 'Warm lentils, roasted seasonal vegetables, brown rice, and a lemon-tahini drizzle.', protein: 25, carbs: 61, fat: 17, fiber: 17, price: 6.5 },
+      pescatarian: { name: 'Salmon & greens plate', ingredients: 'Salmon, brown rice, seasonal greens, and a bright lemon-herb dressing.', protein: 35, carbs: 48, fat: 19, fiber: 9, price: 10.5 }
+    };
+
+    function renderMeal(goals, budget, foodType) {
+      const meal = { ...mealIdeas[foodType] };
+      const scale = Math.min(1.45, Math.max(.7, Math.min(
+        goals.protein ? goals.protein / meal.protein : 1,
+        goals.carbs ? goals.carbs / meal.carbs : 1,
+        goals.fat ? goals.fat / meal.fat : 1,
+        goals.fiber ? goals.fiber / meal.fiber : 1
+      )));
+      const costScale = Math.min(1, budget / (meal.price * scale));
+      const portion = scale * costScale;
+      const estimate = (value) => Math.round(value * portion);
+      const finalCost = Math.min(budget, meal.price * portion);
+      document.querySelector('#meal-name').textContent = meal.name;
+      document.querySelector('#meal-description').textContent = meal.ingredients;
+      document.querySelector('#nutrition-row').innerHTML = [
+        ['Protein', estimate(meal.protein)], ['Carbs', estimate(meal.carbs)], ['Fat', estimate(meal.fat)], ['Fiber', estimate(meal.fiber)]
+      ].map(([label, amount]) => `<div class="nutrition-cell"><strong>${amount}g</strong><span>${label}</span></div>`).join('');
+      document.querySelector('#meal-cost').textContent = `~$${finalCost.toFixed(2)} estimated ingredients`;
+      document.querySelector('#meal-type').textContent = `${foodType[0].toUpperCase()}${foodType.slice(1)} idea`;
+      document.querySelector('#meal-result').classList.add('visible');
+    }
+
+    function renderPlaces(places) {
+      const list = document.querySelector('#place-list');
+      list.replaceChildren();
+      if (!places.length) {
+        const item = document.createElement('li');
+        item.className = 'result-card';
+        item.innerHTML = '<p>No restaurants were listed nearby in OpenStreetMap. Try a broader location; your meal idea is still below.</p>';
+        list.append(item);
+      } else {
+        for (const place of places) {
+          const item = document.createElement('li');
+          item.className = 'place-item';
+          const details = document.createElement('div');
+          const name = document.createElement('strong');
+          const kind = document.createElement('span');
+          const distance = document.createElement('span');
+          name.textContent = place.name;
+          kind.textContent = place.type;
+          distance.className = 'place-distance';
+          distance.textContent = place.distance < 1 ? `${Math.round(place.distance * 1000)} m` : `${place.distance.toFixed(1)} km`;
+          details.append(name, kind);
+          item.append(details, distance);
+          list.append(item);
+        }
+      }
+      document.querySelector('#places-area').hidden = false;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const location = String(data.get('location') || '').trim();
+      const budget = Number(data.get('budget'));
+      const foodType = String(data.get('foodType'));
+      if (!location || !Number.isFinite(budget) || budget <= 0) {
+        statusMessage.classList.add('error');
+        statusMessage.textContent = 'Enter a location and a budget greater than zero.';
+        return;
+      }
+      const goals = Object.fromEntries(['protein', 'carbs', 'fat', 'fiber'].map((key) => [key, Number(data.get(key)) || 0]));
+      const button = document.querySelector('#find-button');
+      button.disabled = true;
+      button.textContent = 'Finding nearby…';
+      statusMessage.classList.remove('error');
+      statusMessage.textContent = 'Looking up your location and nearby places…';
+      document.querySelector('#empty-result').hidden = true;
+      document.querySelector('#meal-result').classList.remove('visible');
+      try {
+        const point = coordinates && document.querySelector('#location').value.includes(',') ? coordinates : await geocodeLocation(location);
+        coordinates = point;
+        renderMeal(goals, budget, foodType);
+        try {
+          const places = await findNearbyPlaces(point);
+          renderPlaces(places);
+          statusMessage.textContent = places.length ? `Found ${places.length} nearby places and made a meal idea for your goals.` : 'No nearby places were listed; your meal idea is ready.';
+        } catch (error) {
+          document.querySelector('#places-area').hidden = true;
+          statusMessage.textContent = `${error.message} Your meal idea is ready.`;
+        }
+      } catch (error) {
+        document.querySelector('#empty-result').hidden = false;
+        statusMessage.classList.add('error');
+        statusMessage.textContent = error.message || 'Something went wrong. Please try again.';
+      } finally {
+        button.disabled = false;
+        button.innerHTML = 'Find my meal <span class="button-arrow" aria-hidden="true">→</span>';
+      }
+    });
+  </script>
+</body>
+</html>
