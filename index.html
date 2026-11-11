@@ -64,7 +64,7 @@
               <div class="input-affix"><input class="control" id="budget" name="budget" type="number" min="1" max="200" step="0.5" value="15" required><span class="affix">USD</span></div>
             </div>
             <div class="field">
-              <label>Nutrition goals <span style="font-weight:400;color:var(--muted)">(grams for this meal)</span></label>
+              <label>Nutrition goals <span style="font-weight:400;color:var(--panel-muted)">(grams for this meal)</span></label>
               <div class="macro-grid">
                 <div class="macro-field"><label for="protein">Protein</label><input class="control" id="protein" name="protein" type="number" min="0" max="250" value="35"></div>
                 <div class="macro-field"><label for="carbs">Carbs</label><input class="control" id="carbs" name="carbs" type="number" min="0" max="400" value="55"></div>
@@ -92,9 +92,10 @@
             <div class="result-area" id="meal-result">
               <p class="section-label">A meal to try</p>
               <h3 class="meal-title" id="meal-name"></h3>
-              <p class="meal-description" id="meal-description"></p>
+              <p class="ingredients-label">Ingredients &amp; amounts</p>
+              <ul class="ingredients-list" id="meal-ingredients"></ul>
               <div class="nutrition-row" id="nutrition-row"></div>
-              <div><span class="mini-tag" id="meal-cost"></span><span class="mini-tag" id="meal-type"></span></div>
+              <div><span class="mini-tag" id="meal-portion"></span><span class="mini-tag" id="meal-cost"></span><span class="mini-tag" id="meal-type"></span></div>
               <p class="disclaimer">Nutrition and meal cost are estimates for this meal idea, not verified restaurant menu items. Confirm ingredients, prices, and allergens with the restaurant. Not medical nutrition advice.</p>
             </div>
           </aside>
