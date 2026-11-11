@@ -77,10 +77,64 @@
     }
 
     const mealIdeas = {
-      omnivore: { name: 'Chicken, rice & greens bowl', ingredients: 'Grilled chicken, brown rice, black beans, greens, and a citrus-yogurt dressing.', protein: 38, carbs: 54, fat: 16, fiber: 12, price: 8.5 },
-      vegetarian: { name: 'Crispy tofu grain bowl', ingredients: 'Golden tofu, brown rice, edamame, crunchy greens, and sesame-lime dressing.', protein: 30, carbs: 57, fat: 18, fiber: 13, price: 7.5 },
-      vegan: { name: 'Lentil & roasted veg bowl', ingredients: 'Warm lentils, roasted seasonal vegetables, brown rice, and a lemon-tahini drizzle.', protein: 25, carbs: 61, fat: 17, fiber: 17, price: 6.5 },
-      pescatarian: { name: 'Salmon & greens plate', ingredients: 'Salmon, brown rice, seasonal greens, and a bright lemon-herb dressing.', protein: 35, carbs: 48, fat: 19, fiber: 9, price: 10.5 }
+      omnivore: {
+        name: 'Chicken, rice & greens bowl',
+        ingredients: [
+          { name: 'Grilled chicken breast', amount: 120, unit: 'g' },
+          { name: 'Cooked brown rice', amount: 150, unit: 'g' },
+          { name: 'Black beans, rinsed', amount: 60, unit: 'g' },
+          { name: 'Baby spinach', amount: 40, unit: 'g' },
+          { name: 'Cherry tomatoes, halved', amount: 50, unit: 'g' },
+          { name: 'Plain Greek yogurt', amount: 25, unit: 'g' },
+          { name: 'Lime juice', amount: 10, unit: 'ml' },
+          { name: 'Olive oil', amount: 5, unit: 'ml' },
+          { name: 'Ground cumin', amount: 1, unit: 'g' }
+        ],
+        protein: 38, carbs: 54, fat: 16, fiber: 12, price: 8.5
+      },
+      vegetarian: {
+        name: 'Crispy tofu grain bowl',
+        ingredients: [
+          { name: 'Extra-firm tofu', amount: 150, unit: 'g' },
+          { name: 'Cooked brown rice', amount: 140, unit: 'g' },
+          { name: 'Shelled edamame', amount: 60, unit: 'g' },
+          { name: 'Shredded red cabbage', amount: 40, unit: 'g' },
+          { name: 'Cucumber, diced', amount: 50, unit: 'g' },
+          { name: 'Soy sauce', amount: 10, unit: 'ml' },
+          { name: 'Lime juice', amount: 10, unit: 'ml' },
+          { name: 'Sesame oil', amount: 5, unit: 'ml' },
+          { name: 'Sesame seeds', amount: 3, unit: 'g' }
+        ],
+        protein: 30, carbs: 57, fat: 18, fiber: 13, price: 7.5
+      },
+      vegan: {
+        name: 'Lentil & roasted veg bowl',
+        ingredients: [
+          { name: 'Cooked green lentils', amount: 150, unit: 'g' },
+          { name: 'Roasted sweet potato', amount: 100, unit: 'g' },
+          { name: 'Cooked brown rice', amount: 100, unit: 'g' },
+          { name: 'Red bell pepper, sliced', amount: 50, unit: 'g' },
+          { name: 'Kale, chopped', amount: 30, unit: 'g' },
+          { name: 'Tahini', amount: 12, unit: 'g' },
+          { name: 'Lemon juice', amount: 10, unit: 'ml' },
+          { name: 'Olive oil', amount: 5, unit: 'ml' }
+        ],
+        protein: 25, carbs: 61, fat: 17, fiber: 17, price: 6.5
+      },
+      pescatarian: {
+        name: 'Salmon & greens plate',
+        ingredients: [
+          { name: 'Baked salmon fillet', amount: 120, unit: 'g' },
+          { name: 'Cooked brown rice', amount: 130, unit: 'g' },
+          { name: 'Roasted asparagus', amount: 80, unit: 'g' },
+          { name: 'Arugula', amount: 30, unit: 'g' },
+          { name: 'Plain Greek yogurt', amount: 20, unit: 'g' },
+          { name: 'Lemon juice', amount: 10, unit: 'ml' },
+          { name: 'Olive oil', amount: 5, unit: 'ml' },
+          { name: 'Fresh dill, chopped', amount: 2, unit: 'g' }
+        ],
+        protein: 35, carbs: 48, fat: 19, fiber: 9, price: 10.5
+      }
     };
 
     function renderMeal(goals, budget, foodType) {
@@ -96,10 +150,18 @@
       const estimate = (value) => Math.round(value * portion);
       const finalCost = Math.min(budget, meal.price * portion);
       document.querySelector('#meal-name').textContent = meal.name;
-      document.querySelector('#meal-description').textContent = meal.ingredients;
+      const ingredientList = document.querySelector('#meal-ingredients');
+      ingredientList.replaceChildren();
+      for (const ingredient of meal.ingredients) {
+        const item = document.createElement('li');
+        const amount = Math.round(ingredient.amount * portion * 10) / 10;
+        item.textContent = `${ingredient.name} — ${amount} ${ingredient.unit}`;
+        ingredientList.append(item);
+      }
       document.querySelector('#nutrition-row').innerHTML = [
         ['Protein', estimate(meal.protein)], ['Carbs', estimate(meal.carbs)], ['Fat', estimate(meal.fat)], ['Fiber', estimate(meal.fiber)]
       ].map(([label, amount]) => `<div class="nutrition-cell"><strong>${amount}g</strong><span>${label}</span></div>`).join('');
+      document.querySelector('#meal-portion').textContent = `${portion.toFixed(2)}x serving`;
       document.querySelector('#meal-cost').textContent = `~$${finalCost.toFixed(2)} estimated ingredients`;
       document.querySelector('#meal-type').textContent = `${foodType[0].toUpperCase()}${foodType.slice(1)} idea`;
       document.querySelector('#meal-result').classList.add('visible');
